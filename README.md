@@ -4,7 +4,7 @@ Antes de tudo, queria esclarecer que durante a leitura utilizaremos classes como
 
 Então vamos ao que interessa.
 
-## Porque SOLID?
+## Por quê SOLID?
 
 A palavra SOLID nada mais é que a junção da primeira letra de cada princípio e a formação dessa palavra não se deu à toa. Por volta de 2004, Michael Feathers sugeriu que se os princípios se organizassem de forma correta, as primeiras letras formariam a palavra SOLID.
 
