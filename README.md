@@ -20,12 +20,10 @@ Não necessariamente uma classe deve ser responsável por realizar somente uma a
 
 A seguir, um exemplo que quebra o princípio do SRP.
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code1.png)
-
 Neste exemplo temos a classe Payment responsável por realizar pagamentos. A classe implementa dois métodos “pay()” e “sendReceiptByEmail()”, o primeiro método que efetua de fato o pagamento está dentro do escopo da classe, no entanto, o segundo método implementa uma ação (enviar comprovante por e-mail) que não faz parte do escopo da classe, tendo dessa forma mais de uma responsabilidade.
 
 Para resolvermos isso, separamos as responsabilidades aplicando o SRP, como mostra o código abaixo:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code2.png)
-
 Criamos uma classe chamada Email e movemos o método que implementa a funcionalidade de enviar comprovante da classe Payment para ela, dessa forma a classe Payment fica responsável somente por efetuar o pagamento e a classe Email por enviar o comprovante.
 
 ## O – Open-Closed Principle (Princípio do Aberto/Fechado)
@@ -38,20 +36,16 @@ Este princípio diz que uma classe deve estar aberta para extensões e fechada p
 
 Vejo um exemplo em que ocorre a quebra desse princípio.
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code3.png)
-
 Supondo que desejamos adicionar mais uma forma de pagamento (por exemplo: Pix), neste caso, teríamos que modificar o método “pay()” adicionando mais uma condição, como mostra o trecho de código a seguir:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code4.png)
-
 Dessa forma, estamos alterando um método que já estava com sua implementação definida.
 
 Para resolvermos isso, aplicamos o OCP. Criamos uma abstração de pagamento, que servirá como um modelo para os tipos de pagamento e conforme seja o tipo sobrescrevemos o método “pay()” para implementar o comportamento adequado.
 
 Veja o exemplo a seguir:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code5.png)
-
 Agora se quisermos adicionar o pagamento por Pix, basta criar uma classe que estenda ou implemente a classe Payment, com isso você será obrigado a sobrescrever o método “pay()” adicionando o comportamento do pagamento por pix, como mostra a seguir:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code6.png)
-
 Assim, adicionamos mais um tipo de pagamento sem impactar os demais tipos já implementados, não havendo qualquer mudança.
 
 ## L – Liskov Substitution Principle (Princípio da Substituição de Liskov)
@@ -62,7 +56,6 @@ Este princípio propõe que subclasses derivadas de uma superclasse devem ser ca
 
 Para entendermos melhor esse princípio vamos ao exemplo:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code7.png)
-
 Temos duas subclasses que são PaymentCard e PaymentBankSlip, ambas são herdadas da superclasse Payment, portanto, são obrigadas a implementar os métodos “pay()” e “selectFlag()”.
 
 Quando instanciamos um objeto do tipo PaymentCard, que nesse caso também é do tipo Payment e executamos os métodos da classe, é esperado que a execução seja bem sucedida e de fato isso ocorre, porém, se tentarmos substituir a subclasse PaymentCard pela PaymentBankSlip e tentarmos excutar novamente os métodos, o sitema nos retorna uma exceção, isso ocorre devido o pagamento por boleto não ter implementado o comportamento de seleção de bandeira, comportamento este que é implementado somente para pagamentos com cartão, com isso, o código anterior viola o princípio SLP, visto que substituimos uma subclasse por outra ocasionando uma falha no sistema.
@@ -90,12 +83,10 @@ Dito isso, o correto é não se referir a classes concretas, não derivar de cla
 
 No exemplo a seguir demonstramos como o DIP é violado:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code9.png)
-
 Neste exemplo podemos notar que a classe PaymentController implementa o método “makePayment()” e que possui uma dependência com PaymentCard, porém, essa dependência está se referindo há um objeto concreto, caso fosse necessário substituir ou adicionar uma forma de pagamento, teríamos que criar um outro objeto concreto e alterar o método “makePayment()” ou então criar um outro método (Ex: makePaymentPix()) dentro PaymentController que instancie a classe concreta criada e realize o pagamento. Claro que essa abordagem não é o correto, devido ao alto nível de acoplamento que a classe possui, estaríamos ferindo outro princípio visto anteriormente, o OCP.
 
 Então para solucionar esse problema, veremos o exemplo a seguir:
 ![](https://github.com/juniior-juf/solid-dart/blob/main/images/code10.png)
-
 Veja que agora estamos dependendo de uma abstração e não de uma concretização, além disso, nossas classes concretas implementam uma abstração e não herdam de classes concreta. Com isso, removemos todo acoplamento que a classe PaymentController possuía.
 
 Além disso, o princípio prega que classes de alto nível não devem depender de classes de baixo nível.
